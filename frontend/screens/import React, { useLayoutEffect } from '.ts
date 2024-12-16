@@ -2,11 +2,10 @@ import React, { useLayoutEffect } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 const ListScreen = ({ navigation }) => {
-  // ポモドーロタイマーの仮データ
   const pomodoroSettings = [
-    { id: '1', title: '集中タイム', duration: '25', breakTime: '5', repeat: 4 },
-    { id: '2', title: '短い休憩', duration: '5', breakTime: '-', repeat: 1 },
-    { id: '3', title: '長い休憩', duration: '15', breakTime: '-', repeat: 1 },
+    { id: '1', title: '集中タイム', duration: '25分', breakTime: '5分', repeat: 4 },
+    { id: '2', title: '短い休憩', duration: '5分', breakTime: '-', repeat: 1 },
+    { id: '3', title: '長い休憩', duration: '15分', breakTime: '-', repeat: 1 },
   ];
 
   const handleEdit = (id) => {
@@ -45,13 +44,18 @@ const ListScreen = ({ navigation }) => {
           <View style={styles.itemContainer}>
             <View style={styles.itemHeader}>
               <Text style={styles.itemTitle}>{item.title}</Text>
-              <View style={styles.buttonsContainer}>
-                <TouchableOpacity
-                  style={styles.editButton}
-                  onPress={() => handleEdit(item.id)}
-                >
-                  <Text style={styles.buttonText}>編集</Text>
-                </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={() => handleEdit(item.id)}
+              >
+                <Text style={styles.buttonText}>編集</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.itemDetails}>
+              <Text style={styles.itemDetail}>作業時間: {item.duration}</Text>
+              <Text style={styles.itemDetail}>休憩時間: {item.breakTime}</Text>
+              <Text style={styles.itemDetail}>繰り返し回数: {item.repeat}回</Text>
+              <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={styles.deleteButton}
                   onPress={() => handleDelete(item.id)}
@@ -60,20 +64,10 @@ const ListScreen = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.itemDetails}>
-              <Text style={styles.itemDetail}>作業時間: {item.duration}分</Text>
-              <Text style={styles.itemDetail}>休憩時間: {item.breakTime}</Text>
-              <Text style={styles.itemDetail}>繰り返し回数: {item.repeat}回</Text>
-              <TouchableOpacity
-                style={styles.startButton}
-                onPress={() => navigation.navigate('TimerScreen', { ...item })}
-              >
-                <Text style={styles.buttonText}>タイマー開始</Text>
-              </TouchableOpacity>
-            </View>
           </View>
         )}
       />
+
       {/* 戻るボタン */}
       <Button title="もどる" onPress={() => navigation.goBack()} />
     </View>
@@ -129,27 +123,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
-  buttonsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  editButton: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 4,
-    marginRight: 10,
-  },
-  deleteButton: {
-    backgroundColor: '#FF6347', // 赤色
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 4,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-  },
   itemDetails: {
     paddingTop: 5,
   },
@@ -158,13 +131,27 @@ const styles = StyleSheet.create({
     color: '#555',
     marginBottom: 5,
   },
-  startButton: {
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  editButton: {
     backgroundColor: '#4CAF50',
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 4,
-    marginTop: 10,
-    alignItems: 'center',
+    marginBottom: 4,
+  },
+  deleteButton: {
+    backgroundColor: '#F44336',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 4,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 
