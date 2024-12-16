@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 
 const EditScreen = ({ route, navigation }) => {
-  // `route.params`から編集対象のデータを受け取る
   const { id, title: initialTitle, duration: initialDuration, breakTime: initialBreakTime, repeat: initialRepeat } = route.params;
 
   const [title, setTitle] = useState(initialTitle);
@@ -16,9 +15,8 @@ const EditScreen = ({ route, navigation }) => {
       return;
     }
 
-    // 必要に応じて保存処理を追加
     Alert.alert('成功', '編集内容を保存しました');
-    navigation.goBack(); // 一覧画面に戻る
+    navigation.goBack();
   };
 
   return (

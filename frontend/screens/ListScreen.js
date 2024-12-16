@@ -1,14 +1,29 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 const ListScreen = ({ navigation }) => {
-  // ポモドーロタイマーの仮データ
-  const pomodoroSettings = [
-    { id: '1', title: '集中タイム', duration: '25', breakTime: '5', repeat: 4 },
-    { id: '2', title: '短い休憩', duration: '5', breakTime: '-', repeat: 1 },
-    { id: '3', title: '長い休憩', duration: '15', breakTime: '-', repeat: 1 },
-  ];
+  const [pomodoroSettings, setPomodoroSettings] = useState([]);
 
+  // ポモドーロ設定一覧を取得
+  useEffect(() => {
+    const fetchPomodoroSettings = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/pomodoro');
+        if (response.ok) {
+          const data = await response.json();
+          setPomodoroSettings(data);
+        } else {
+          console.log('エラーが発生しました:', response.status);
+        }
+      } catch (error) {
+        console.error('通信エラー:', error);
+      }
+    };
+
+    fetchPomodoroSettings();
+  }, []);
+
+  // 編集画面に遷移
   const handleEdit = (id) => {
     const item = pomodoroSettings.find((setting) => setting.id === id);
     if (item) {
@@ -16,11 +31,27 @@ const ListScreen = ({ navigation }) => {
     }
   };
 
-  const handleDelete = (id) => {
-    console.log(`削除ボタンが押されました: ${id}`);
+  // 削除機能
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/pomodoro/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        alert('ポモドーロ設定が削除されました');
+        setPomodoroSettings(pomodoroSettings.filter((item) => item.id !== id));  // リストを更新
+      } else {
+        console.log('削除エラー:', response.status);
+        alert('削除に失敗しました');
+      }
+    } catch (error) {
+      console.error('削除エラー:', error);
+      alert('通信エラー');
+    }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
@@ -40,7 +71,7 @@ const ListScreen = ({ navigation }) => {
       {/* 一覧表示 */}
       <FlatList
         data={pomodoroSettings}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
             <View style={styles.itemHeader}>
@@ -141,7 +172,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   deleteButton: {
-    backgroundColor: '#FF6347', // 赤色
+    backgroundColor: '#FF6347',
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 4,

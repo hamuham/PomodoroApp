@@ -2,31 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
 const TimerScreen = ({ route, navigation }) => {
-  const { title, duration, breakTime, repeat } = route.params;  // リスト画面から受け取った情報
+  const { title, duration } = route.params;
 
-  const [timeLeft, setTimeLeft] = useState(parseInt(duration) * 60);  // タイマーの残り時間（秒）
-  const [isRunning, setIsRunning] = useState(false);  // タイマーが動いているか
-  const [timerId, setTimerId] = useState(null);  // タイマーID（停止のため）
+  const [timeLeft, setTimeLeft] = useState(parseInt(duration) * 60);
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
+    let timerId;
+
     if (isRunning) {
-      const id = setInterval(() => {
+      timerId = setInterval(() => {
         setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
       }, 1000);
-      setTimerId(id);
-    } else {
-      if (timerId) {
-        clearInterval(timerId);
-      }
     }
 
-    // クリーンアップ
     return () => {
       if (timerId) {
         clearInterval(timerId);
       }
     };
-  }, [isRunning, timerId]);
+  }, [isRunning]);
 
   const handleStartStop = () => {
     setIsRunning((prevState) => !prevState);

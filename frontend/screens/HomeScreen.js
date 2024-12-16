@@ -27,14 +27,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 背景に半透明のオーバーレイを追加
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   title: {
     fontSize: 36,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 10,
-    textShadowColor: 'rgba(0, 0, 0, 0.8)', // テキストに影を追加
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 5,
   },
