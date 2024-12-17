@@ -29,12 +29,11 @@ const CreateScreen = ({ navigation }) => {
 
       if (response.ok) {
         alert('ポモドーロ設定が保存されました');
-        navigation.goBack();
+        navigation.replace('List');
       } else {
-        console.log(response)
         alert('エラーが発生しました');
       }
-    } catch (errord) {
+    } catch (error) {
       console.error('Error:', error);
       alert('通信エラー');
     }
