@@ -10,7 +10,8 @@ const ListScreen = ({ navigation }) => {
       try {
         const response = await fetch('http://localhost:8000/api/pomodoro');
         if (response.ok) {
-          const data = await response.json();
+            const data = await response.json();
+            console.log(data)
           setPomodoroSettings(data);
         } else {
           console.log('エラーが発生しました:', response.status);
@@ -93,7 +94,7 @@ const ListScreen = ({ navigation }) => {
             </View>
             <View style={styles.itemDetails}>
               <Text style={styles.itemDetail}>作業時間: {item.duration}分</Text>
-              <Text style={styles.itemDetail}>休憩時間: {item.breakTime}</Text>
+              <Text style={styles.itemDetail}>休憩時間: {item.break_time}</Text>
               <Text style={styles.itemDetail}>繰り返し回数: {item.repeat}回</Text>
               <TouchableOpacity
                 style={styles.startButton}
